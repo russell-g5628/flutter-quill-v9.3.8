@@ -93,7 +93,7 @@ flutter:
         - asset: assets/fonts/SansSerif.ttf
     - family: ibarra-real-nova
       fonts:
-          - asset: assets/fonts/IbarraRealNova-Regular.ttf
+        - asset: assets/fonts/IbarraRealNova-Regular.ttf
     - family: square-peg
       fonts:
         - asset: assets/fonts/SquarePeg-Regular.ttf
