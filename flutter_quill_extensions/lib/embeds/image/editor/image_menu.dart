@@ -1,20 +1,11 @@
-import 'package:flutter/cupertino.dart' show showCupertinoModalPopup;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/extensions.dart';
 import 'package:flutter_quill/flutter_quill.dart'
     show ImageUrl, QuillController, StyleAttribute, getEmbedNode;
 import 'package:flutter_quill/translations.dart';
-import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../models/config/image/editor/image_configurations.dart';
-import '../../../models/config/shared_configurations.dart';
 import '../../../services/image_saver/s_image_saver.dart';
 import '../../../utils/element_utils/element_utils.dart';
-import '../../../utils/string.dart';
-import '../../../utils/utils.dart';
-import '../../widgets/image.dart' show ImageTapWrapper, getImageStyleString;
-import '../../widgets/image_resizer.dart' show ImageResizer;
 
 class ImageOptionsMenu extends StatelessWidget {
   const ImageOptionsMenu({
@@ -42,69 +33,69 @@ class ImageOptionsMenu extends StatelessWidget {
       child: SimpleDialog(
         title: Text(context.loc.image),
         children: [
-          if (!isReadOnly)
-            ListTile(
-              title: Text(context.loc.resize),
-              leading: const Icon(Icons.settings_outlined),
-              onTap: () {
-                Navigator.pop(context);
-                showCupertinoModalPopup<void>(
-                  context: context,
-                  builder: (modalContext) {
-                    final screenSize = MediaQuery.sizeOf(modalContext);
-                    return FlutterQuillLocalizationsWidget(
-                      child: ImageResizer(
-                        onImageResize: (width, height) {
-                          final res = getEmbedNode(
-                            controller,
-                            controller.selection.start,
-                          );
-
-                          final attr = replaceStyleStringWithSize(
-                            getImageStyleString(controller),
-                            width: width,
-                            height: height,
-                          );
-                          controller
-                            ..skipRequestKeyboard = true
-                            ..formatText(
-                              res.offset,
-                              1,
-                              StyleAttribute(attr),
-                            );
-                        },
-                        imageWidth: imageSize.width,
-                        imageHeight: imageSize.height,
-                        maxWidth: screenSize.width,
-                        maxHeight: screenSize.height,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ListTile(
-            leading: const Icon(Icons.copy_all_outlined),
-            title: Text(context.loc.copy),
-            onTap: () async {
-              final navigator = Navigator.of(context);
-              final imageNode =
-                  getEmbedNode(controller, controller.selection.start).value;
-              final image = imageNode.value.data;
-              controller.copiedImageUrl = ImageUrl(
-                image,
-                getImageStyleString(controller),
-              );
-
-              final data = await convertImageToUint8List(image);
-              final clipboard = SystemClipboard.instance;
-              if (data != null) {
-                final item = DataWriterItem()..add(Formats.png(data));
-                await clipboard?.write([item]);
-              }
-              navigator.pop();
-            },
-          ),
+          // if (!isReadOnly)
+          //   ListTile(
+          //     title: Text(context.loc.resize),
+          //     leading: const Icon(Icons.settings_outlined),
+          //     onTap: () {
+          //       Navigator.pop(context);
+          //       showCupertinoModalPopup<void>(
+          //         context: context,
+          //         builder: (modalContext) {
+          //           final screenSize = MediaQuery.sizeOf(modalContext);
+          //           return FlutterQuillLocalizationsWidget(
+          //             child: ImageResizer(
+          //               onImageResize: (width, height) {
+          //                 final res = getEmbedNode(
+          //                   controller,
+          //                   controller.selection.start,
+          //                 );
+          //
+          //                 final attr = replaceStyleStringWithSize(
+          //                   getImageStyleString(controller),
+          //                   width: width,
+          //                   height: height,
+          //                 );
+          //                 controller
+          //                   ..skipRequestKeyboard = true
+          //                   ..formatText(
+          //                     res.offset,
+          //                     1,
+          //                     StyleAttribute(attr),
+          //                   );
+          //               },
+          //               imageWidth: imageSize.width,
+          //               imageHeight: imageSize.height,
+          //               maxWidth: screenSize.width,
+          //               maxHeight: screenSize.height,
+          //             ),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ListTile(
+          //   leading: const Icon(Icons.copy_all_outlined),
+          //   title: Text(context.loc.copy),
+          //   onTap: () async {
+          //     final navigator = Navigator.of(context);
+          //     final imageNode =
+          //         getEmbedNode(controller, controller.selection.start).value;
+          //     final image = imageNode.value.data;
+          //     controller.copiedImageUrl = ImageUrl(
+          //       image,
+          //       getImageStyleString(controller),
+          //     );
+          //
+          //     final data = await convertImageToUint8List(image);
+          //     final clipboard = SystemClipboard.instance;
+          //     if (data != null) {
+          //       final item = DataWriterItem()..add(Formats.png(data));
+          //       await clipboard?.write([item]);
+          //     }
+          //     navigator.pop();
+          //   },
+          // ),
           if (!isReadOnly)
             ListTile(
               leading: Icon(
@@ -116,9 +107,7 @@ class ImageOptionsMenu extends StatelessWidget {
                 Navigator.of(context).pop();
 
                 // Call the remove check callback if set
-                if (await configurations.shouldRemoveImageCallback
-                        ?.call(imageSource) ==
-                    false) {
+                if (await configurations.shouldRemoveImageCallback?.call(imageSource) == false) {
                   return;
                 }
 
@@ -136,65 +125,65 @@ class ImageOptionsMenu extends StatelessWidget {
                 await configurations.onImageRemovedCallback.call(imageSource);
               },
             ),
-          if (!kIsWeb)
-            ListTile(
-              leading: const Icon(Icons.save),
-              title: Text(context.loc.save),
-              onTap: () async {
-                final messenger = ScaffoldMessenger.of(context);
-                final localizations = context.loc;
-                Navigator.of(context).pop();
-
-                final saveImageResult = await saveImage(
-                  imageUrl: imageSource,
-                  imageSaverService: imageSaverService,
-                );
-                final imageSavedSuccessfully = saveImageResult.error == null;
-
-                messenger.clearSnackBars();
-
-                if (!imageSavedSuccessfully) {
-                  messenger.showSnackBar(SnackBar(
-                      content: Text(
-                    localizations.errorWhileSavingImage,
-                  )));
-                  return;
-                }
-
-                var message = switch (saveImageResult.method) {
-                  SaveImageResultMethod.network =>
-                    localizations.savedUsingTheNetwork,
-                  SaveImageResultMethod.localStorage =>
-                    localizations.savedUsingLocalStorage,
-                };
-
-                if (isDesktop(supportWeb: false)) {
-                  message = localizations.theImageHasBeenSavedAt(imageSource);
-                }
-
-                messenger.showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
-              },
-            ),
-          ListTile(
-            leading: const Icon(Icons.zoom_in),
-            title: Text(context.loc.zoom),
-            onTap: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ImageTapWrapper(
-                  assetsPrefix:
-                      QuillSharedExtensionsConfigurations.get(context: context)
-                          .assetsPrefix,
-                  imageUrl: imageSource,
-                  configurations: configurations,
-                ),
-              ),
-            ),
-          ),
+          // if (!kIsWeb)
+          //   ListTile(
+          //     leading: const Icon(Icons.save),
+          //     title: Text(context.loc.save),
+          //     onTap: () async {
+          //       final messenger = ScaffoldMessenger.of(context);
+          //       final localizations = context.loc;
+          //       Navigator.of(context).pop();
+          //
+          //       final saveImageResult = await saveImage(
+          //         imageUrl: imageSource,
+          //         imageSaverService: imageSaverService,
+          //       );
+          //       final imageSavedSuccessfully = saveImageResult.error == null;
+          //
+          //       messenger.clearSnackBars();
+          //
+          //       if (!imageSavedSuccessfully) {
+          //         messenger.showSnackBar(SnackBar(
+          //             content: Text(
+          //           localizations.errorWhileSavingImage,
+          //         )));
+          //         return;
+          //       }
+          //
+          //       var message = switch (saveImageResult.method) {
+          //         SaveImageResultMethod.network =>
+          //           localizations.savedUsingTheNetwork,
+          //         SaveImageResultMethod.localStorage =>
+          //           localizations.savedUsingLocalStorage,
+          //       };
+          //
+          //       if (isDesktop(supportWeb: false)) {
+          //         message = localizations.theImageHasBeenSavedAt(imageSource);
+          //       }
+          //
+          //       messenger.showSnackBar(
+          //         SnackBar(
+          //           content: Text(message),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ListTile(
+          //   leading: const Icon(Icons.zoom_in),
+          //   title: Text(context.loc.zoom),
+          //   onTap: () => Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (_) => ImageTapWrapper(
+          //         assetsPrefix:
+          //             QuillSharedExtensionsConfigurations.get(context: context)
+          //                 .assetsPrefix,
+          //         imageUrl: imageSource,
+          //         configurations: configurations,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
