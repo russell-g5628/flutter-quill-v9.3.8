@@ -23,8 +23,7 @@ const List<String> imageFileExtensions = [
 String getImageStyleString(QuillController controller) {
   final String? s = controller
       .getAllSelectionStyles()
-      .firstWhere((s) => s.attributes.containsKey(Attribute.style.key),
-          orElse: Style.new)
+      .firstWhere((s) => s.attributes.containsKey(Attribute.style.key), orElse: Style.new)
       .attributes[Attribute.style.key]
       ?.value;
   return s ?? '';
@@ -82,6 +81,22 @@ Image getImageWidgetByImageSource(
     width: width,
     height: height,
     alignment: alignment,
+    loadingBuilder: (context, child, loadingProgress) {
+      if (loadingProgress == null) {
+        return child;
+      }
+      return Container(
+        alignment: Alignment.center,
+        width: 100,
+        height: 100,
+        child: CircularProgressIndicator(
+          color: Theme.of(context).primaryColor,
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    },
     errorBuilder: imageErrorWidgetBuilder,
   );
 }
@@ -100,14 +115,14 @@ String standardizeImageUrl(String url) {
 /// If imageUrl does not end with it's file extension,
 /// file extension is added to image url for saving.
 String appendFileExtensionToImageUrl(String url) {
-  final endsWithImageFileExtension = imageFileExtensions
-      .firstWhere((s) => url.toLowerCase().endsWith(s), orElse: () => '');
+  final endsWithImageFileExtension =
+      imageFileExtensions.firstWhere((s) => url.toLowerCase().endsWith(s), orElse: () => '');
   if (endsWithImageFileExtension.isNotEmpty) {
     return url;
   }
 
-  final imageFileExtension = imageFileExtensions
-      .firstWhere((s) => url.toLowerCase().contains(s), orElse: () => '');
+  final imageFileExtension =
+      imageFileExtensions.firstWhere((s) => url.toLowerCase().contains(s), orElse: () => '');
 
   return url + imageFileExtension;
 }
