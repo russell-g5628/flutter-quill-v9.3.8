@@ -17,7 +17,7 @@ class QuillToolbarFontFamilyButton extends StatefulWidget {
     super.key,
   })  : assert(options.rawItemsMap?.isNotEmpty ?? (true)),
         assert(
-        options.initialValue == null || options.initialValue!.isNotEmpty,
+          options.initialValue == null || options.initialValue!.isNotEmpty,
         );
 
   final QuillToolbarFontFamilyButtonOptions options;
@@ -30,12 +30,10 @@ class QuillToolbarFontFamilyButton extends StatefulWidget {
   bool isIconBottom = false;
 
   @override
-  QuillToolbarFontFamilyButtonState createState() =>
-      QuillToolbarFontFamilyButtonState();
+  QuillToolbarFontFamilyButtonState createState() => QuillToolbarFontFamilyButtonState();
 }
 
-class QuillToolbarFontFamilyButtonState
-    extends State<QuillToolbarFontFamilyButton> {
+class QuillToolbarFontFamilyButtonState extends State<QuillToolbarFontFamilyButton> {
   var _currentValue = '';
   final _menuKey = GlobalKey();
   ScrollController? scrollController;
@@ -93,20 +91,19 @@ class QuillToolbarFontFamilyButtonState
   // }
 
   Map<String, String> get rawItemsMap {
-    final rawItemsMap =
-        context.quillSimpleToolbarConfigurations?.fontFamilyValues ??
-            options.rawItemsMap ??
-            {
-              'Sans Serif': 'sans-serif',
-              'Serif': 'serif',
-              'Monospace': 'monospace',
-              'Ibarra Real Nova': 'ibarra-real-nova',
-              'SquarePeg': 'square-peg',
-              'Nunito': 'nunito',
-              'Pacifico': 'pacifico',
-              'Roboto Mono': 'roboto-mono',
-              context.loc.clear: 'Clear'
-            };
+    final rawItemsMap = context.quillSimpleToolbarConfigurations?.fontFamilyValues ??
+        options.rawItemsMap ??
+        {
+          'Sans Serif': 'sans-serif',
+          'Serif': 'serif',
+          'Monospace': 'monospace',
+          'Ibarra Real Nova': 'ibarra-real-nova',
+          'SquarePeg': 'square-peg',
+          'Nunito': 'nunito',
+          'Pacifico': 'pacifico',
+          'Roboto Mono': 'roboto-mono',
+          context.loc.clear: 'Clear'
+        };
     return rawItemsMap;
   }
 
@@ -130,20 +127,17 @@ class QuillToolbarFontFamilyButtonState
   }
 
   double get iconButtonFactor {
-    final baseIconFactor =
-        context.quillToolbarBaseButtonOptions?.iconButtonFactor;
+    final baseIconFactor = context.quillToolbarBaseButtonOptions?.iconButtonFactor;
     final iconButtonFactor = widget.options.iconButtonFactor;
     return iconButtonFactor ?? baseIconFactor ?? kDefaultIconButtonFactor;
   }
 
   VoidCallback? get afterButtonPressed {
-    return options.afterButtonPressed ??
-        context.quillToolbarBaseButtonOptions?.afterButtonPressed;
+    return options.afterButtonPressed ?? context.quillToolbarBaseButtonOptions?.afterButtonPressed;
   }
 
   QuillIconTheme? get iconTheme {
-    return options.iconTheme ??
-        context.quillToolbarBaseButtonOptions?.iconTheme;
+    return options.iconTheme ?? context.quillToolbarBaseButtonOptions?.iconTheme;
   }
 
   String get tooltip {
@@ -161,10 +155,7 @@ class QuillToolbarFontFamilyButtonState
             .localToGlobal(Offset.zero); //this is global position
 
         _menuController.open(
-            position: Offset(10, position.dy - MediaQuery
-                .of(context)
-                .viewInsets
-                .bottom));
+            position: Offset(10, position.dy - MediaQuery.of(context).viewInsets.bottom));
       } else {
         _menuController.open();
       }
@@ -177,8 +168,7 @@ class QuillToolbarFontFamilyButtonState
   @override
   Widget build(BuildContext context) {
     final baseButtonConfigurations = context.quillToolbarBaseButtonOptions;
-    final childBuilder =
-        options.childBuilder ?? baseButtonConfigurations?.childBuilder;
+    final childBuilder = options.childBuilder ?? baseButtonConfigurations?.childBuilder;
     if (childBuilder != null) {
       return childBuilder(
         options,
@@ -209,72 +199,69 @@ class QuillToolbarFontFamilyButtonState
         key: _menuKey,
         controller: _menuController,
         menuChildren: [
-        RawScrollbar(
-        controller: scrollController,
-        padding: const EdgeInsets.all(0),
-        child: LimitedBox(
-          maxHeight: 256,
-          child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                  children: [
-                  for (final MapEntry<String, String > fontFamily in rawItemsMap.entries)
-              MenuItemButton(
-              key: ValueKey(fontFamily.key),
-          // value: fontFamily.value,
-          // height: options.itemHeight ?? kMinInteractiveDimension,
-          // padding: options.itemPadding,
-          onPressed: () {
-            final newValue = fontFamily.value;
-            final keyName = _getKeyName(newValue);
-            setState(() {
-              if (keyName != 'Clear') {
-                _currentValue = keyName ?? _defaultDisplayText;
-              } else {
-                _currentValue = _defaultDisplayText;
-              }
-              if (keyName != null) {
-                controller.formatSelection(
-                  Attribute.fromKeyValue(
-                    Attribute.font.key,
-                    newValue == 'Clear' ? null : newValue,
-                  ),
-                );
-                options.onSelected?.call(newValue);
-              }
-            });
+          RawScrollbar(
+            controller: scrollController,
+            padding: const EdgeInsets.all(0),
+            child: LimitedBox(
+              maxHeight: 256,
+              child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      for (final MapEntry<String, String> fontFamily in rawItemsMap.entries)
+                        MenuItemButton(
+                          key: ValueKey(fontFamily.key),
+                          // value: fontFamily.value,
+                          // height: options.itemHeight ?? kMinInteractiveDimension,
+                          // padding: options.itemPadding,
+                          onPressed: () {
+                            final newValue = fontFamily.value;
+                            final keyName = _getKeyName(newValue);
+                            setState(() {
+                              if (keyName != 'Clear') {
+                                _currentValue = keyName ?? _defaultDisplayText;
+                              } else {
+                                _currentValue = _defaultDisplayText;
+                              }
+                              if (keyName != null) {
+                                controller.formatSelection(
+                                  Attribute.fromKeyValue(
+                                    Attribute.font.key,
+                                    newValue == 'Clear' ? null : newValue,
+                                  ),
+                                );
+                                options.onSelected?.call(newValue);
+                              }
+                            });
 
-            if (fontFamily.value == 'Clear') {
-              controller.selectFontFamily(null);
-              return;
-            }
-            controller.selectFontFamily(fontFamily);
-          },
-          child: Text(
-            fontFamily.key.toString(),
-            style: TextStyle(
-              fontFamily:
-              options.renderFontFamilies ? fontFamily.value : null,
-              color: fontFamily.value == 'Clear'
-                  ? options.defaultItemColor
-                  : null,
+                            if (fontFamily.value == 'Clear') {
+                              controller.selectFontFamily(null);
+                              return;
+                            }
+                            controller.selectFontFamily(fontFamily);
+                          },
+                          child: Text(
+                            fontFamily.key.toString(),
+                            style: TextStyle(
+                              fontFamily: options.renderFontFamilies ? fontFamily.value : null,
+                              color: fontFamily.value == 'Clear' ? options.defaultItemColor : null,
+                            ),
+                          ),
+                        )
+                    ],
+                  )),
             ),
-          ),
-          ],
-        ),
-      ),
-    ),
-    )
-    ],
-    child: Builder(
-    builder: (context) {
-    final isMaterial3 = Theme.of(context).useMaterial3;
-    if (!isMaterial3) {
-    return RawMaterialButton(
-    onPressed: _onPressed,
-    child: _buildContent(context),
-    );
-    }
+          )
+        ],
+        child: Builder(
+          builder: (context) {
+            final isMaterial3 = Theme.of(context).useMaterial3;
+            if (!isMaterial3) {
+              return RawMaterialButton(
+                onPressed: _onPressed,
+                child: _buildContent(context),
+              );
+            }
             return QuillToolbarIconButton(
               isSelected: false,
               iconTheme: iconTheme,
