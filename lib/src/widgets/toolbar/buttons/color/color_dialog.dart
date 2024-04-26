@@ -19,6 +19,7 @@ class ColorPickerDialog extends StatefulWidget {
     required this.selectionStyle,
     super.key,
   });
+
   final bool isBackground;
 
   final bool isToggledColor;
@@ -30,16 +31,16 @@ class ColorPickerDialog extends StatefulWidget {
 }
 
 class ColorPickerDialogState extends State<ColorPickerDialog> {
-  var pickerType = _PickerType.material;
-  var selectedColor = Colors.black;
+  // var pickerType = _PickerType.material;
+  Color selectedColor = Colors.amber;
 
-  late final TextEditingController hexController;
+  // late final TextEditingController hexController;
   late void Function(void Function()) colorBoxSetState;
 
   @override
   void initState() {
     super.initState();
-    hexController = TextEditingController(text: colorToHex(selectedColor));
+    // hexController = TextEditingController(text: colorToHex(selectedColor));
     if (widget.isToggledColor) {
       selectedColor = widget.isBackground
           ? hexToColor(widget.selectionStyle.attributes['background']?.value)
@@ -63,99 +64,104 @@ class ColorPickerDialogState extends State<ColorPickerDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      pickerType = _PickerType.material;
-                    });
-                  },
-                  child: Text(context.loc.material),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      pickerType = _PickerType.color;
-                    });
-                  },
-                  child: Text(context.loc.color),
-                ),
-                TextButton(
-                  onPressed: () {
-                    widget.onRequestChangeColor(context, null);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(context.loc.clear),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     TextButton(
+            //       onPressed: () {
+            //         setState(() {
+            //           pickerType = _PickerType.material;
+            //         });
+            //       },
+            //       child: Text(context.loc.material),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         setState(() {
+            //           pickerType = _PickerType.color;
+            //         });
+            //       },
+            //       child: Text(context.loc.color),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         widget.onRequestChangeColor(context, null);
+            //         Navigator.of(context).pop();
+            //       },
+            //       child: Text(context.loc.clear),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 6),
-            Column(
-              children: [
-                if (pickerType == _PickerType.material)
-                  MaterialPicker(
-                    pickerColor: selectedColor,
-                    onColorChanged: (color) {
-                      widget.onRequestChangeColor(context, color);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                if (pickerType == _PickerType.color)
-                  ColorPicker(
-                    pickerColor: selectedColor,
-                    onColorChanged: (color) {
-                      widget.onRequestChangeColor(context, color);
-                      hexController.text = colorToHex(color);
-                      selectedColor = color;
-                      colorBoxSetState(() {});
-                    },
-                  ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      height: 60,
-                      child: TextFormField(
-                        controller: hexController,
-                        onChanged: (value) {
-                          selectedColor = hexToColor(value);
-                          widget.onRequestChangeColor(context, selectedColor);
-
-                          colorBoxSetState(() {});
-                        },
-                        decoration: InputDecoration(
-                          labelText: context.loc.hex,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    StatefulBuilder(
-                      builder: (context, mcolorBoxSetState) {
-                        colorBoxSetState = mcolorBoxSetState;
-                        return Container(
-                          width: 25,
-                          height: 25,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black45,
-                            ),
-                            color: selectedColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            )
+            MaterialPicker(
+              pickerColor: selectedColor,
+              onColorChanged: (color) {
+                widget.onRequestChangeColor(context, color);
+                Navigator.of(context).pop();
+              },
+            ),
+            // Column(
+            //   children: [
+            // if (pickerType == _PickerType.material)
+            // MaterialPicker(
+            //   pickerColor: selectedColor,
+            //   onColorChanged: (color) {
+            //     widget.onRequestChangeColor(context, color);
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
+            // if (pickerType == _PickerType.color)
+            //   ColorPicker(
+            //     pickerColor: selectedColor,
+            //     onColorChanged: (color) {
+            //       widget.onRequestChangeColor(context, color);
+            //       hexController.text = colorToHex(color);
+            //       selectedColor = color;
+            //       colorBoxSetState(() {});
+            //     },
+            //   ),
+            // const SizedBox(height: 10),
+            // Row(
+            //   children: [
+            //     SizedBox(
+            //       width: 100,
+            //       height: 60,
+            //       child: TextFormField(
+            //         controller: hexController,
+            //         onChanged: (value) {
+            //           selectedColor = hexToColor(value);
+            //           widget.onRequestChangeColor(context, selectedColor);
+            //
+            //           colorBoxSetState(() {});
+            //         },
+            //         decoration: InputDecoration(
+            //           labelText: context.loc.hex,
+            //           border: const OutlineInputBorder(),
+            //         ),
+            //       ),
+            //     ),
+            //     const SizedBox(
+            //       width: 10,
+            //     ),
+            //     StatefulBuilder(
+            //       builder: (context, mcolorBoxSetState) {
+            //         colorBoxSetState = mcolorBoxSetState;
+            //         return Container(
+            //           width: 25,
+            //           height: 25,
+            //           decoration: BoxDecoration(
+            //             border: Border.all(
+            //               color: Colors.black45,
+            //             ),
+            //             color: selectedColor,
+            //             borderRadius: BorderRadius.circular(5),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ],
+            // ),
+            // ],
+            // )
           ],
         ),
       ),
