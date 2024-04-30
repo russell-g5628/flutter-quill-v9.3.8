@@ -55,7 +55,7 @@ Future<InsertImageSource?> showSelectImageSourceDialog({
     context: context,
     constraints: const BoxConstraints(maxWidth: 640),
     builder: (_) => const FlutterQuillLocalizationsWidget(
-      child: SelectImageSourceDialog(),
+      child: SafeArea(top: false, left: false, right: false, child: SelectImageSourceDialog()),
     ),
   );
   return imageSource;
