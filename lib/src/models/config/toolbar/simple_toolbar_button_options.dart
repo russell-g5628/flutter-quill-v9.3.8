@@ -65,16 +65,17 @@ class QuillSimpleToolbarButtonOptions extends Equatable {
     this.color = const QuillToolbarColorButtonOptions(),
     this.backgroundColor = const QuillToolbarColorButtonOptions(),
     this.clearFormat = const QuillToolbarClearFormatButtonOptions(),
-    this.selectAlignmentButtons =
-        const QuillToolbarSelectAlignmentButtonOptions(),
+    this.selectAlignmentButtons = const QuillToolbarSelectAlignmentButtonOptions(),
     this.search = const QuillToolbarSearchButtonOptions(),
-    this.selectHeaderStyleButtons =
-        const QuillToolbarSelectHeaderStyleButtonsOptions(),
+    this.selectHeaderStyleButtons = const QuillToolbarSelectHeaderStyleButtonsOptions(),
     this.selectHeaderStyleDropdownButton =
         const QuillToolbarSelectHeaderStyleDropdownButtonOptions(),
     this.linkStyle = const QuillToolbarLinkStyleButtonOptions(),
     this.linkStyle2 = const QuillToolbarLinkStyleButton2Options(),
     this.customButtons = const QuillToolbarCustomButtonOptions(),
+    this.clipboardCut = const QuillToolbarToggleStyleButtonOptions(),
+    this.clipboardCopy = const QuillToolbarToggleStyleButtonOptions(),
+    this.clipboardPaste = const QuillToolbarToggleStyleButtonOptions(),
   });
 
   /// The base configurations for all the buttons which will apply to all
@@ -113,6 +114,10 @@ class QuillSimpleToolbarButtonOptions extends Equatable {
 
   final QuillToolbarSearchButtonOptions search;
 
+  final QuillToolbarToggleStyleButtonOptions clipboardCut;
+  final QuillToolbarToggleStyleButtonOptions clipboardCopy;
+  final QuillToolbarToggleStyleButtonOptions clipboardPaste;
+
   /// The reason we call this buttons in the end because this is responsible
   /// for all the header style buttons and not just one, you still
   /// can customize it and you also have child builder
@@ -121,8 +126,7 @@ class QuillSimpleToolbarButtonOptions extends Equatable {
   /// The reason we call this buttons in the end because this is responsible
   /// for all the header style buttons and not just one, you still
   /// can customize it and you also have child builder
-  final QuillToolbarSelectHeaderStyleDropdownButtonOptions
-      selectHeaderStyleDropdownButton;
+  final QuillToolbarSelectHeaderStyleDropdownButtonOptions selectHeaderStyleDropdownButton;
 
   final QuillToolbarLinkStyleButtonOptions linkStyle;
   final QuillToolbarLinkStyleButton2Options linkStyle2;

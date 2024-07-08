@@ -59,6 +59,7 @@ class _QuillScreenState extends State<QuillScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _controller.readOnly = _isReadOnly;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Quill'),
@@ -90,7 +91,7 @@ class _QuillScreenState extends State<QuillScreen> {
                 onPressed: () async {
                   final pdfDocument = pw.Document();
                   final pdfWidgets =
-                      await _controller.document.toDelta().toPdf();
+                  await _controller.document.toDelta().toPdf();
                   pdfDocument.addPage(
                     pw.MultiPage(
                       maxPages: 200,
@@ -152,7 +153,6 @@ class _QuillScreenState extends State<QuillScreen> {
                   configurations: QuillEditorConfigurations(
                     sharedConfigurations: _sharedConfigurations,
                     controller: _controller,
-                    readOnly: _isReadOnly,
                   ),
                   scrollController: _editorScrollController,
                   focusNode: _editorFocusNode,
