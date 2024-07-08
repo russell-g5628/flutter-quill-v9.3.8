@@ -516,10 +516,10 @@ class QuillController extends ChangeNotifier {
   Future<bool> clipboardPaste({void Function()? updateEditor}) async {
     if (readOnly || !selection.isValid) return true;
 
-    if (await _pasteHTML()) {
-      updateEditor?.call();
-      return true;
-    }
+    // if (await _pasteHTML()) {
+    //   updateEditor?.call();
+    //   return true;
+    // }
 
     // Snapshot the input before using `await`.
     // See https://github.com/flutter/flutter/issues/11427
@@ -543,6 +543,13 @@ class QuillController extends ChangeNotifier {
     return false;
   }
 
+  /// MEMO
+  ///
+  /// https://firebase.google.com/docs/ios/link-firebase-static-dynamic?hl=ko
+  /// IOS SUPER_CLIPBOARD로 인해서 HTML PARSING은 하지 않는다.
+  ///
+  /// use_frameworks! :linkage => :static  삭제 필요 (용량이 늘어남 - 항상 코드를 가지고 있어야 하기 때문)
+  /// use_frameworks! :linkage => :dynamic 정상 동작 (동작이 느려짐)
   Future<bool> _pasteHTML() async {
     final clipboard = SystemClipboard.instance;
     if (clipboard != null) {
