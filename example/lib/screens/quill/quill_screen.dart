@@ -141,11 +141,6 @@ class _QuillScreenState extends State<QuillScreen> {
       ),
       body: Column(
         children: [
-          if (!_isReadOnly)
-            MyQuillToolbar(
-              controller: _controller,
-              focusNode: _editorFocusNode,
-            ),
           Builder(
             builder: (context) {
               return Expanded(
@@ -160,6 +155,11 @@ class _QuillScreenState extends State<QuillScreen> {
               );
             },
           ),
+          if (!_isReadOnly)
+            MyQuillToolbar(
+              controller: _controller,
+              focusNode: _editorFocusNode,
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -173,8 +173,7 @@ class _QuillScreenState extends State<QuillScreen> {
     return const QuillSharedConfigurations(
       // locale: Locale('en'),
       extraConfigurations: {
-        QuillSharedExtensionsConfigurations.key:
-            QuillSharedExtensionsConfigurations(
+        QuillSharedExtensionsConfigurations.key: QuillSharedExtensionsConfigurations(
           assetsPrefix: 'assets', // Defaults to assets
         ),
       },

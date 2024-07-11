@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../extensions.dart';
-
 import '../../../extensions/quill_configurations_ext.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../models/documents/attribute.dart';
@@ -93,8 +92,7 @@ class QuillToolbarFontSizeButtonState extends QuillToolbarBaseValueButtonState<
   @override
   Widget build(BuildContext context) {
     final baseButtonConfigurations = context.quillToolbarBaseButtonOptions;
-    final childBuilder =
-        options.childBuilder ?? baseButtonConfigurations?.childBuilder;
+    final childBuilder = options.childBuilder ?? baseButtonConfigurations?.childBuilder;
     if (childBuilder != null) {
       return childBuilder(
         options,
@@ -107,40 +105,56 @@ class QuillToolbarFontSizeButtonState extends QuillToolbarBaseValueButtonState<
         ),
       );
     }
+
+    double itemHeight = 200;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      itemHeight = 100;
+    }
+
     return MenuAnchor(
       controller: _menuController,
-      menuChildren: rawItemsMap.entries.map((fontSize) {
-        return MenuItemButton(
-          key: ValueKey(fontSize.key),
-          onPressed: () {
-            final newValue = fontSize.value;
+      alignmentOffset: Offset(10, -(itemHeight + 60)),
+      menuChildren: [
+        SizedBox(
+          height: itemHeight,
+          child: SingleChildScrollView(
+            primary: false, // primary 속성을 false로 설정
+            child: Column(
+                children: rawItemsMap.entries.map((fontSize) {
+              return MenuItemButton(
+                key: ValueKey(fontSize.key),
+                onPressed: () {
+                  final newValue = fontSize.value;
 
-            final keyName = _getKeyName(newValue);
-            setState(() {
-              if (keyName != context.loc.clear) {
-                currentValue = keyName ?? _defaultDisplayText;
-              } else {
-                currentValue = _defaultDisplayText;
-              }
-              if (keyName != null) {
-                controller.formatSelection(
-                  Attribute.fromKeyValue(
-                    Attribute.size.key,
-                    newValue == '0' ? null : getFontSize(newValue),
+                  final keyName = _getKeyName(newValue);
+                  setState(() {
+                    if (keyName != context.loc.clear) {
+                      currentValue = keyName ?? _defaultDisplayText;
+                    } else {
+                      currentValue = _defaultDisplayText;
+                    }
+                    if (keyName != null) {
+                      controller.formatSelection(
+                        Attribute.fromKeyValue(
+                          Attribute.size.key,
+                          newValue == '0' ? null : getFontSize(newValue),
+                        ),
+                      );
+                      options.onSelected?.call(newValue);
+                    }
+                  });
+                },
+                child: Text(
+                  fontSize.key.toString(),
+                  style: TextStyle(
+                    color: fontSize.value == '0' ? options.defaultItemColor : null,
                   ),
-                );
-                options.onSelected?.call(newValue);
-              }
-            });
-          },
-          child: Text(
-            fontSize.key.toString(),
-            style: TextStyle(
-              color: fontSize.value == '0' ? options.defaultItemColor : null,
-            ),
+                ),
+              );
+            }).toList()),
           ),
-        );
-      }).toList(),
+        )
+      ],
       child: Builder(
         builder: (context) {
           final isMaterial3 = Theme.of(context).useMaterial3;

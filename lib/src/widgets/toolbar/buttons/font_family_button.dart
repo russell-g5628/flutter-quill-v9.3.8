@@ -101,6 +101,11 @@ class QuillToolbarFontFamilyButtonState extends QuillToolbarBaseValueButtonState
         ),
       );
     }
+    double itemHeight = 200;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      itemHeight = 100;
+    }
+
     return UtilityWidgets.maybeWidget(
       enabled: tooltip.isNotEmpty || options.overrideTooltipByFontFamily,
       wrapper: (child) {
@@ -113,42 +118,53 @@ class QuillToolbarFontFamilyButtonState extends QuillToolbarBaseValueButtonState
         return Tooltip(message: effectiveTooltip, child: child);
       },
       child: MenuAnchor(
+        alignmentOffset: Offset(10, -(itemHeight + 60)),
         controller: _menuController,
         menuChildren: [
-          for (final MapEntry<String, String> fontFamily in rawItemsMap.entries)
-            MenuItemButton(
-              key: ValueKey(fontFamily.key),
-              // value: fontFamily.value,
-              // height: options.itemHeight ?? kMinInteractiveDimension,
-              // padding: options.itemPadding,
-              onPressed: () {
-                final newValue = fontFamily.value;
-                final keyName = _getKeyName(newValue);
-                setState(() {
-                  if (keyName != 'Clear') {
-                    currentValue = keyName ?? _defaultDisplayText;
-                  } else {
-                    currentValue = _defaultDisplayText;
-                  }
-                  if (keyName != null) {
-                    controller.formatSelection(
-                      Attribute.fromKeyValue(
-                        Attribute.font.key,
-                        newValue == 'Clear' ? null : newValue,
+          SizedBox(
+            height: itemHeight,
+            child: SingleChildScrollView(
+              primary: false,
+              child: Column(
+                children: [
+                  for (final MapEntry<String, String> fontFamily in rawItemsMap.entries)
+                    MenuItemButton(
+                      key: ValueKey(fontFamily.key),
+                      // value: fontFamily.value,
+                      // height: options.itemHeight ?? kMinInteractiveDimension,
+                      // padding: options.itemPadding,
+                      onPressed: () {
+                        final newValue = fontFamily.value;
+                        final keyName = _getKeyName(newValue);
+                        setState(() {
+                          if (keyName != 'Clear') {
+                            currentValue = keyName ?? _defaultDisplayText;
+                          } else {
+                            currentValue = _defaultDisplayText;
+                          }
+                          if (keyName != null) {
+                            controller.formatSelection(
+                              Attribute.fromKeyValue(
+                                Attribute.font.key,
+                                newValue == 'Clear' ? null : newValue,
+                              ),
+                            );
+                            options.onSelected?.call(newValue);
+                          }
+                        });
+                      },
+                      child: Text(
+                        fontFamily.key.toString(),
+                        style: TextStyle(
+                          fontFamily: options.renderFontFamilies ? fontFamily.value : null,
+                          color: fontFamily.value == 'Clear' ? options.defaultItemColor : null,
+                        ),
                       ),
-                    );
-                    options.onSelected?.call(newValue);
-                  }
-                });
-              },
-              child: Text(
-                fontFamily.key.toString(),
-                style: TextStyle(
-                  fontFamily: options.renderFontFamilies ? fontFamily.value : null,
-                  color: fontFamily.value == 'Clear' ? options.defaultItemColor : null,
-                ),
+                    ),
+                ],
               ),
             ),
+          )
         ],
         child: Builder(
           builder: (context) {
