@@ -40,7 +40,8 @@ dependencies:
 
   # Plugins
   video_player: ^2.8.1
-  youtube_player_flutter: ^9.0.0
+  # 9.0.4 - IOS에서 오류 
+  youtube_player_flutter: 9.0.3
   url_launcher: ^6.2.1
   super_clipboard: ^0.8.17
   gal: ^2.3.0
