@@ -1,8 +1,10 @@
 import 'quill_localizations.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for Romanian Moldavian Moldovan (`ro`).
 class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
-  FlutterQuillLocalizationsRo([super.locale = 'ro']);
+  FlutterQuillLocalizationsRo([String locale = 'ro']) : super(locale);
 
   @override
   String get pasteLink => 'Lipește un link';
@@ -128,6 +130,9 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
   String get alignRight => 'Aliniază la dreapta';
 
   @override
+  String get alignJustify => 'Justificare';
+
+  @override
   String get justifyWinWidth => 'Justifică lățimea ferestrei';
 
   @override
@@ -206,6 +211,9 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
   String get color => 'Culoare';
 
   @override
+  String get lineheight => 'Inaltimea liniei';
+
+  @override
   String get findText => 'Găsește text';
 
   @override
@@ -222,7 +230,7 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
 
   @override
   String theImageHasBeenSavedAt(String imagePath) {
-    return 'The image has been saved at: $imagePath';
+    return 'Imaginea a fost salvată la: $imagePath';
   }
 
   @override
@@ -230,11 +238,11 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
 
   @override
   String get pleaseEnterTextForYourLink =>
-      "Vă rugăm să introduceți un text pentru link-ul dvs. (de exemplu, 'Aflați mai multe')";
+      'Vă rugăm să introduceți un text pentru link-ul dvs. (de exemplu, \'Aflați mai multe\')';
 
   @override
   String get pleaseEnterTheLinkURL =>
-      "Vă rugăm să introduceți URL-ul link-ului (de exemplu, 'https://example.com')";
+      'Vă rugăm să introduceți URL-ul link-ului (de exemplu, \'https://example.com\')';
 
   @override
   String get pleaseEnterAValidImageURL =>
@@ -253,6 +261,12 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
   @override
   String get caseSensitivityAndWholeWordSearch =>
       'Sensibilitate la majuscule și căutare cuvânt întreg';
+
+  @override
+  String get caseSensitive => 'Sensibilitate la majuscule și minuscule';
+
+  @override
+  String get wholeWord => 'Cuvânt întreg';
 
   @override
   String get insertImage => 'Introdu imaginea';
@@ -275,6 +289,24 @@ class FlutterQuillLocalizationsRo extends FlutterQuillLocalizations {
 
   @override
   String get pasteAVideoUsingALink => 'Lipește un video folosind un link';
+
+  @override
+  String get close => 'Închide';
+
+  @override
+  String get searchSettings => 'Setări de căutare';
+
+  @override
+  String get cut => 'Tăia';
+
+  @override
+  String get paste => 'Lipire';
+
+  @override
+  String get insertTable => 'Inserare tabel';
+
+  @override
+  String get insertVideo => 'Insert video';
 }
 
 /// The translations for Romanian Moldavian Moldovan, as used in Romania (`ro_RO`).
@@ -405,6 +437,9 @@ class FlutterQuillLocalizationsRoRo extends FlutterQuillLocalizationsRo {
   String get alignRight => 'Aliniază la dreapta';
 
   @override
+  String get alignJustify => 'Justificare';
+
+  @override
   String get justifyWinWidth => 'Justifică lățimea ferestrei';
 
   @override
@@ -483,6 +518,9 @@ class FlutterQuillLocalizationsRoRo extends FlutterQuillLocalizationsRo {
   String get color => 'Culoare';
 
   @override
+  String get lineheight => 'Inaltimea liniei';
+
+  @override
   String get findText => 'Găsește text';
 
   @override
@@ -498,15 +536,20 @@ class FlutterQuillLocalizationsRoRo extends FlutterQuillLocalizationsRo {
   String get savedUsingLocalStorage => 'Salvat în stocarea locală';
 
   @override
+  String theImageHasBeenSavedAt(String imagePath) {
+    return 'Imaginea a fost salvată la: $imagePath';
+  }
+
+  @override
   String get errorWhileSavingImage => 'Eroare la salvarea imaginii';
 
   @override
   String get pleaseEnterTextForYourLink =>
-      "Vă rugăm să introduceți un text pentru link-ul dvs. (de exemplu, 'Aflați mai multe')";
+      'Vă rugăm să introduceți un text pentru link-ul dvs. (de exemplu, \'Aflați mai multe\')';
 
   @override
   String get pleaseEnterTheLinkURL =>
-      "Vă rugăm să introduceți URL-ul link-ului (de exemplu, 'https://example.com')";
+      'Vă rugăm să introduceți URL-ul link-ului (de exemplu, \'https://example.com\')';
 
   @override
   String get pleaseEnterAValidImageURL =>
@@ -525,6 +568,12 @@ class FlutterQuillLocalizationsRoRo extends FlutterQuillLocalizationsRo {
   @override
   String get caseSensitivityAndWholeWordSearch =>
       'Sensibilitate la majuscule și căutare cuvânt întreg';
+
+  @override
+  String get caseSensitive => 'Sensibilitate la majuscule și minuscule';
+
+  @override
+  String get wholeWord => 'Cuvânt întreg';
 
   @override
   String get insertImage => 'Introdu imaginea';
@@ -547,4 +596,19 @@ class FlutterQuillLocalizationsRoRo extends FlutterQuillLocalizationsRo {
 
   @override
   String get pasteAVideoUsingALink => 'Lipește un video folosind un link';
+
+  @override
+  String get close => 'Închide';
+
+  @override
+  String get searchSettings => 'Setări de căutare';
+
+  @override
+  String get cut => 'Tăia';
+
+  @override
+  String get paste => 'Lipire';
+
+  @override
+  String get insertTable => 'Inserare tabel';
 }
