@@ -113,9 +113,11 @@ class QuillToolbarFontSizeButtonState extends QuillToolbarBaseButtonState<
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       itemHeight = 100;
     }
+    int buttonHeight = 50;
 
     return MenuAnchor(
       controller: _menuController,
+      alignmentOffset: Offset(0, -1 * itemHeight - buttonHeight),
       menuChildren: [
         SizedBox(
           height: itemHeight,
@@ -150,7 +152,9 @@ class QuillToolbarFontSizeButtonState extends QuillToolbarBaseButtonState<
                     child: Text(
                       fontSize.key.toString(),
                       style: TextStyle(
-                        color: fontSize.value == '0' ? options.defaultItemColor : null,
+                        color: fontSize.value == '0'
+                            ? options.defaultItemColor
+                            : null,
                       ),
                     ),
                   );
